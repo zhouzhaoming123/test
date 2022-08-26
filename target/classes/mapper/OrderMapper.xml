@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzmhome.mybatisplus.mapper.OrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.zzmhome.mybatisplus.bean.Order">
+            <id property="orderId" column="order_id" jdbcType="BIGINT"/>
+            <result property="productId" column="product_id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="price" column="price" jdbcType="INTEGER"/>
+            <result property="pay" column="pay" jdbcType="INTEGER"/>
+            <result property="version" column="VERSION" jdbcType="INTEGER"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        order_id,product_id,user_id,
+        price,pay,VERSION,
+        is_deleted
+    </sql>
+    <insert id="insertSelective">
+        insert into t_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="price != null">price,</if>
+            <if test="pay != null">pay,</if>
+            <if test="version != null">VERSION,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId,jdbcType=BIGINT},</if>
+            <if test="productId != null">#{productId,jdbcType=INTEGER},</if>
+            <if test="userId != null">#{userId,jdbcType=INTEGER},</if>
+            <if test="price != null">#{price,jdbcType=INTEGER},</if>
+            <if test="pay != null">#{pay,jdbcType=INTEGER},</if>
+            <if test="version != null">#{version,jdbcType=INTEGER},</if>
+            <if test="isDeleted != null">#{isDeleted,jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByOrderId">
+        delete from t_order
+        where
+        order_id = #{orderId,jdbcType=NUMERIC}
+    </delete>
+
+    <update id="updatePriceAndPayByOrderId">
+        update t_order
+         set price = #{price,jdbcType=NUMERIC},
+         pay = #{pay,jdbcType=NUMERIC}
+        where
+        order_id = #{orderId,jdbcType=NUMERIC}
+    </update>
+
+    <select id="selectAllByOrderId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_order
+        where
+        order_id = #{orderId,jdbcType=NUMERIC}
+    </select>
+
+    <select id="selectProductIdByOrderIdOrderByPrice" resultMap="BaseResultMap">
+        select product_id
+        from t_order
+        where
+        order_id = #{orderId,jdbcType=NUMERIC}
+        order by price
+    </select>
+</mapper>
