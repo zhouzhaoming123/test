@@ -1,0 +1,91 @@
+连ssh 10.10.1.70
+ssh loguser@10.191.44.110   loguser/TRZ@45mp
+
+telnet 172.21.1.19 3079
+
+下载命令  sz filter.xml
+rm 文件名   -----删除
+rz Enter   ----上传文件
+
+容器里写脚本文件：
+vi zzm.sh  回车
+下面显示insert（不是输入i）
+开头粘贴脚本，   末尾   :wq!
+ls   执行脚本 sh zzm.sh
+
+查看容器内存：
+你到容器里 执行命令
+先 jps 拿到进程号再
+ jmap -heap 那个进程号 看内存
+
+ jmap -histo 进程号
+ jmap -histo:live 进程号
+ 
+ 
+ ##查看内存占用率
+jps
+jmap -heap 16
+jmap -histo:live 16|head -60
+top  (Shift h 线程暂用率)
+printf %x 76
+jstack 16|grep 4c
+jstack 16|grep -A50 4c
+
+zgrep -A 1 'message type:1409' receive.log.*
+zgrep   send.log.*
+grep -a 'kafka send msg' *
+
+
+#查看镜像启动日志
+kubectl logs  podname -n namespace
+kubectl logs  cloud.alarm.relation.manager-664bb8c6d5-9rw8t
+
+kubectl logs cloud.alarm.relation.manager-664bb8c6d5-9rw8t | more
+
+查询镜像目录：  	kubectl get deploy
+查询镜像服务地址：  kubectl get svc
+启动镜像：  然后kubectl scale deploy 两个ai服务空格隔开 --replicas=1
+容器下线命令： 
+kubectl get deploy |findstr manager
+kubectl scale deploy alarm.relation.manager --replicas=0
+
+查看镜像号：kubectl describe pod | findstr relation.manager
+			kubectl describe pod | findstr association
+
+			
+#查看容器启动参数：   kubectl edit deploy oss-framework 
+#取消编辑  :q 
+
+# 查看所有 pod 列表		kubectl get pod |grep relation.manager   ubectl get pod |findstr relation.manager
+kubectl exec -it cloud.alarm.relation.manager-664bb8c6d5-9rw8t bash
+kubectl delete pod sharedservices-transfer-sheet-647c86bd84-td5cb
+
+# 从pod内部复制文件到本地  kubectl cp podname:/your/log/path/filename filename -n namespace
+kubectl cp alarm-ai-weclat-559db5885c-prmk4:root/alarmsrc/rootdir/log/appalarm.log appalarm.log -n default
+kubectl -n glgz cp alarm-ai-weclat-559db5885c-prmk4:root/alarmsrc/rootdir/log/appalarm.log appalarm.log -n glgz
+
+/usr/local/wwwalarm setting.ini
+rootdir = /root/alarmsrc/rootdir
+重启服务  ./gunicorn_start_alarm stop , ./gunicorn_start_alarm start
+nano app.py
+kubectl edit cm alarmapp-config @阿明  修改settings.ini 是用这个命令
+ps -aux
+
+
+##解压
+gzip -d send_2022-07-13-16.0.gz
+
+unzip -n kafkaSendResult_2022-07-14-18.0.zip
+
+#修改文件格式
+vi filename
+:wq  #完成    :q   #取消编辑
+
+
+
+ssh -gL 13079:172.21.1.19:3079 -fN agent@172.24.123.244 -p 22222
+
+
+
+
+
